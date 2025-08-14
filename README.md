@@ -10,3 +10,4 @@
 - Contains the code for all the components of the testbench for the project.
 
 ##  TESTBENCH ARCHITECTURE.
+<img width="661" height="354" alt="image" src="https://github.com/user-attachments/assets/53cd0690-88f5-47ec-8301-2f4452e71804" />
