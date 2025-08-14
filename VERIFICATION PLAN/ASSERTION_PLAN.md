@@ -1,1 +1,1 @@
-[ASSERTION PLAN](https://docs.google.com/spreadsheets/d/1Fck9vrtvL5zfFl_Gz4zhNWiUNXAE8zYzfyAnxNNsUys/edit?gid=0#gid=0)
+[ASSERTION PLAN](https://docs.google.com/spreadsheets/d/1Fck9vrtvL5zfFl_Gz4zhNWiUNXAE8zYzfyAnxNNsUys/edit?usp=sharing)
