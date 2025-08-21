@@ -8,10 +8,12 @@ class alu_monitor extends uvm_monitor;
   seq_item mon_item;
   uvm_analysis_port#(seq_item)analysis_port;
   uvm_analysis_port#(seq_item)mon_cov_port;
+  uvm_analysis_port#(seq_item)drv_cov_port;
   function new(string name,uvm_component parent);
     super.new(name,parent);
     analysis_port = new("mon_ap",this);
     mon_cov_port = new("mon_cov_port",this);
+    drv_cov_port = new("drv_cov_port",this);
     mon_item = new();
   endfunction
 
@@ -36,6 +38,8 @@ class alu_monitor extends uvm_monitor;
     mon_item.CMD = mon_vif.mon_cb.CMD;
     mon_item.mode = mon_vif.mon_cb.mode;
     mon_item.inp_valid = mon_vif.mon_cb.inp_valid;
+    mon_cov_port.write(mon_item);
+    drv_cov_port.write(mon_item);
   endtask
 
 
@@ -46,16 +50,16 @@ class alu_monitor extends uvm_monitor;
     int count;
 
     monitor_op();
-    mon_cov_port.write(mon_item);
+    //mon_cov_port.write(mon_item);
     repeat(4)@(mon_vif.mon_cb);
     forever begin : mainloop
       monitor_op();
-      mon_cov_port.write(mon_item);
+      //mon_cov_port.write(mon_item);
       if(mon_item.inp_valid == 2'b11 || mon_item.inp_valid == 2'b00) begin : if1
         if(mon_item.mode == 1 && (mon_item.CMD == 9 || mon_item.CMD == 10)) begin : nif1
           repeat(2)@(mon_vif.mon_cb);
           monitor_op();
-          mon_cov_port.write(mon_item);
+          //mon_cov_port.write(mon_item);
           `uvm_info(get_type_name,$sformatf("| MONITOR | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",mon_item.mode,mon_item.inp_valid,mon_item.CMD, mon_item.OPA,mon_item.OPB,mon_item.Cin),UVM_MEDIUM )
           `uvm_info(get_type_name(),$sformatf("| DUT OUTPUT | RES = %0d |",mon_item.RES),UVM_MEDIUM)
           $display("");
@@ -65,7 +69,7 @@ class alu_monitor extends uvm_monitor;
           repeat(1)@(mon_vif.mon_cb);
           $display("here");
           monitor_op();
-          mon_cov_port.write(mon_item);
+          //mon_cov_port.write(mon_item);
           `uvm_info(get_type_name,$sformatf("| MONITOR | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",mon_item.mode,mon_item.inp_valid,mon_item.CMD, mon_item.OPA,mon_item.OPB,mon_item.Cin),UVM_MEDIUM )
           `uvm_info(get_type_name(),$sformatf("| DUT OUTPUT | RES = %0d |",mon_item.RES),UVM_MEDIUM)
           $display("");
@@ -75,7 +79,7 @@ class alu_monitor extends uvm_monitor;
       else if(mon_item.mode == 0 && mon_item.CMD inside {single_op_logical}) begin : eif1
         repeat(1)@(mon_vif.mon_cb);
         monitor_op();
-        mon_cov_port.write(mon_item);
+        //mon_cov_port.write(mon_item);
         `uvm_info(get_type_name,$sformatf("| MONITOR | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",mon_item.mode,mon_item.inp_valid,mon_item.CMD, mon_item.OPA,mon_item.OPB,mon_item.Cin),UVM_MEDIUM )
         `uvm_info(get_type_name(),$sformatf("| DUT OUTPUT | RES = %0d |",mon_item.RES),UVM_MEDIUM)
         $display("");
@@ -84,7 +88,7 @@ class alu_monitor extends uvm_monitor;
       else if(mon_item.mode == 1 && mon_item.CMD inside {single_op_arithmetic}) begin : eif2
          repeat(1)@(mon_vif.mon_cb);
          monitor_op();
-         mon_cov_port.write(mon_item);
+         //mon_cov_port.write(mon_item);
          `uvm_info(get_type_name,$sformatf("| MONITOR | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",mon_item.mode,mon_item.inp_valid,mon_item.CMD, mon_item.OPA,mon_item.OPB,mon_item.Cin),UVM_MEDIUM )
         `uvm_info(get_type_name(),$sformatf("| DUT OUTPUT | RES = %0d |",mon_item.RES),UVM_MEDIUM)
         $display("");
@@ -95,10 +99,10 @@ class alu_monitor extends uvm_monitor;
           count++;
           repeat(1)@(mon_vif.mon_cb);
           monitor_op();
-          mon_cov_port.write(mon_item);
+          //mon_cov_port.write(mon_item);
           if(mon_item.inp_valid == 2'b11) begin : nif1
             monitor_op();
-            mon_cov_port.write(mon_item);
+            //mon_cov_port.write(mon_item);
             `uvm_info(get_type_name,$sformatf("| MONITOR | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",mon_item.mode,mon_item.inp_valid,mon_item.CMD, mon_item.OPA,mon_item.OPB,mon_item.Cin),UVM_MEDIUM )
             `uvm_info(get_type_name(),$sformatf("| DUT OUTPUT | RES = %0d |",mon_item.RES),UVM_MEDIUM)
             $display("");
