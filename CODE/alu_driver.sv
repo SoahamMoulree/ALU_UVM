@@ -4,10 +4,10 @@ class alu_driver extends uvm_driver#(seq_item);
 
   `uvm_component_utils(alu_driver)
   virtual alu_intf drv_vif;
-  uvm_analysis_port#(seq_item)drv_cov_port;
+ //uvm_analysis_port#(seq_item)drv_cov_port;
   function new(string name,uvm_component parent);
     super.new(name,parent);
-    drv_cov_port = new("drv_cov_port",this);
+    //drv_cov_port = new("drv_cov_port",this);
   endfunction
 
   function void build_phase(uvm_phase phase);
@@ -39,7 +39,7 @@ class alu_driver extends uvm_driver#(seq_item);
       if(req.inp_valid == 2'b11 || req.inp_valid == 2'b00)  begin : if1
 
         drive_inputs();
-        drv_cov_port.write(req);
+        //drv_cov_port.write(req);
         `uvm_info(get_type_name(),$sformatf("|VALUES DRIVEN | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",req.mode,req.inp_valid,req.CMD, req.OPA,req.OPB,req.Cin),UVM_MEDIUM);
         $display("");
         if(req.mode == 1 && (req.CMD == 9 || req.CMD == 10))
@@ -50,7 +50,7 @@ class alu_driver extends uvm_driver#(seq_item);
 
       else if(req.mode == 0 && req.CMD inside{single_op_logical}) begin : eif1;
         drive_inputs();
-        drv_cov_port.write(req);
+        //drv_cov_port.write(req);
         `uvm_info(get_type_name(),$sformatf("|VALUES DRIVEN | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",req.mode,req.inp_valid,req.CMD, req.OPA,req.OPB,req.Cin),UVM_MEDIUM);
         $display("");
         repeat(1)@(drv_vif.drv_cb);
@@ -58,7 +58,7 @@ class alu_driver extends uvm_driver#(seq_item);
 
       else if(req.mode == 1 && req.CMD inside {single_op_arithmetic}) begin : ef2
         drive_inputs();
-        drv_cov_port.write(req);
+        //drv_cov_port.write(req);
         `uvm_info(get_type_name(),$sformatf("|VALUES DRIVEN | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",req.mode,req.inp_valid,req.CMD, req.OPA,req.OPB,req.Cin),UVM_MEDIUM);
         $display("");
         repeat(1)@(drv_vif.drv_cb);
@@ -66,7 +66,7 @@ class alu_driver extends uvm_driver#(seq_item);
 
       else begin : e1
         drive_inputs();
-        drv_cov_port.write(req);
+        //drv_cov_port.write(req);
         `uvm_info(get_type_name(),$sformatf("|VALUES DRIVEN | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",req.mode,req.inp_valid,req.CMD, req.OPA,req.OPB,req.Cin),UVM_MEDIUM);
         $display("");
         req.CMD.rand_mode(0);
@@ -77,7 +77,7 @@ class alu_driver extends uvm_driver#(seq_item);
           repeat(1)@(drv_vif.drv_cb);
           req.randomize();
           drive_inputs();
-          drv_cov_port.write(req);
+          //drv_cov_port.write(req);
           `uvm_info(get_type_name(),$sformatf(" [%0d] |VALUES DRIVEN | MODE = %0b | INP_VALID = %2b | CMD = %4b | OPA = %3d | OPB = %3d | CIN = %0d ",count,req.mode,req.inp_valid,req.CMD, req.OPA,req.OPB,req.Cin),UVM_MEDIUM);
           $display("");
 
